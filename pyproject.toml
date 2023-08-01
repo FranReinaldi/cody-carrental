@@ -10,8 +10,8 @@ packages = [{include = "cody_carrental"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "^4.2.4"
-google-auth = "^2.22.0"
 flake8 = "^6.1.0"
+python-dotenv = "^1.0.0"
 
 
 [build-system]
