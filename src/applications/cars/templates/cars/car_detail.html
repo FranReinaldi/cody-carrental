@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{%block content%}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+        <h1>{{ car.manufacturer }}</h1>
+        <p>Model: {{ car.model }}</p>
+        <p>Year: {{ car.year }}</p>
+
+        <!-- Botón de editar que abrirá el modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
+            Edit
+        </button>
+
+        <!-- Modal de edición -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Car Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulario de edición -->
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="submit" value="Save" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
