@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{%block content%}
+
+<div class="container mt-5" style="text-align: center;">
+    <h1>Add a new manufacturer brand</h1>
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label" style="display: block; width: 100px;">Brand:</label>
+            {{ form.manufacturer }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" style="display: block; width: 100px;">Model:</label>
+            {{ form.model }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" style="display: block; width: 100px;">Year:</label>
+            {{ form.year }}
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+
+
+{%endblock%}
