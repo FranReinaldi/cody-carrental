@@ -33,8 +33,8 @@
     <tbody>
         {% for car in cars %}
         <tr>
-            <td><a href="/cars/{{car.pk}}">{{ car.manufacturer.name }}</a></td>
-            <td>{{ car.model }}</td>
+            <td><a href="/cars/brand/{{car.manufacturer.pk}}">{{ car.manufacturer.name }}</a></td>
+            <td><a href="/cars/{{car.pk}}">{{ car.model }}</a></td>
             <td>{{ car.year }}</td>
             <td style="text-align: right;">
                 <!-- Agrega el botón de borrado como un enlace que abre el modal -->
