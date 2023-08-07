@@ -7,11 +7,15 @@ license = "MIT"
 readme = "README.md"
 packages = [{include = "cody_carrental"}]
 
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "carrental.settings"
+
 [tool.poetry.dependencies]
 python = "^3.10"
 django = "^4.2.4"
 flake8 = "^6.1.0"
 python-dotenv = "^1.0.0"
+pytest-django = "^4.5.2"
 
 
 [build-system]
