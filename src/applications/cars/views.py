@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Car
+from .models import Car, Manufacturer
 from .forms import ManufacturerForm, CarForm
 
 def console(request):
@@ -56,3 +56,24 @@ def car_detail(request, car_id):
         form = CarForm(instance=car)
 
     return render(request, 'cars/car_detail.html', {'car': car, 'form': form})
+
+def brand_detail(request, brand_id):
+    brand = get_object_or_404(Manufacturer, id=brand_id)
+
+    if request.method == 'POST':
+        form = ManufacturerForm(request.POST, instance=brand)
+        if form.is_valid():
+            form.save()
+            return redirect('brand_detail', brand_id=brand.id)
+
+    else:
+        form = ManufacturerForm(instance=brand)
+
+    return render(request, 'cars/brand_detail.html', {'brand': brand, 'form': form})
+
+def brand_delete(request, pk):
+    brand = get_object_or_404(Manufacturer, pk=pk)
+
+    if request.method == 'POST':
+        brand.delete()
+        return redirect('car-console')
