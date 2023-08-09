@@ -8,7 +8,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'phone', 'address', 'password1', 'password2']
+        fields = ['email', 'username', 'phone', 'address', 'password1', 'password2']
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -24,8 +24,23 @@ class RegisterForm(forms.ModelForm):
             user.save()
         return user
 
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+        self.fields['email'].widget = forms.EmailInput(attrs={'class': 'form-control'})
+        self.fields['username'].widget = forms.TextInput(attrs={'class': 'form-control'})
+        self.fields['phone'].widget = forms.NumberInput(attrs={'class': 'form-control'})
+        self.fields['address'].widget = forms.TextInput(attrs={'class': 'form-control'})
+        self.fields['password1'].widget = forms.PasswordInput(attrs={'class': 'form-control'})
+        self.fields['password2'].widget = forms.PasswordInput(attrs={'class': 'form-control'})
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'phone', 'address']
+        fields = ['username', 'phone', 'address']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget = forms.TextInput(attrs={'class': 'form-control'})
+        self.fields['phone'].widget = forms.TextInput(attrs={'class': 'form-control'})
+        self.fields['address'].widget = forms.TextInput(attrs={'class': 'form-control'})
