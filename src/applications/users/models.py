@@ -19,6 +19,7 @@ class UserManager(BaseUserManager):
                                 password=password)
         user.is_admin = True
         user.is_staff = True
+        user.is_superuser=True
         user.save(using=self._db)
         return user
 
@@ -37,3 +38,13 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+class UserType(models.Model):
+
+    TYPE_CHOICES = (
+        ('S','STAFF'),
+        ('C','CLIENT')
+        )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    type = models.CharField(choices=TYPE_CHOICES, default='C', max_length=2)
