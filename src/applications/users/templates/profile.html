@@ -18,7 +18,29 @@
                 <label class="form-label" style="display: block; width: 100px;">Address:</label>
                 {{ form.address }}
             </div>
-        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateSuccessModal">Update Profile</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveModal">Update Profile</button>
+        
+        <!-- Save Modal -->
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="saveModalLabel">Save Profile</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Do you want to save the changes to your profile?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form method="post" action="{% url 'profile' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
     <div style="margin-top: 10px;"></div>
     <form method="post" action="{% url 'logout' %}">
@@ -27,24 +49,6 @@
     </form>
     <div style="margin-top: 10px;"></div>
     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Account</button>
-</div>
-
-<!-- Update Success Modal -->
-<div class="modal fade" id="updateSuccessModal" tabindex="-1" aria-labelledby="updateSuccessModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateSuccessModalLabel">Update Profile</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Your profile has been updated successfully.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Delete Modal -->
