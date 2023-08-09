@@ -1,13 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>User Registration</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
 
-    <p>Already registered? <a href="{% url 'login' %}">Log in here</a></p>
+<div class="container mt-5" style="text-align: center;">
+    <h1>User Registration</h1>
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        <div class="mb-3" style="text-align: left;">
+            <label class="form-label" style="display: block; width: 100px;">Username:</label>
+            {{ form.username }}
+        </div>
+        <div class="mb-3" style="text-align: left;">
+            <label class="form-label" style="display: block; width: 100px;">Email:</label>
+            {{ form.email }}
+        </div>
+        <div class="mb-3" style="text-align: left;">
+            <label class="form-label" style="display: block; width: 100px;">Phone:</label>
+            {{ form.phone }}
+        </div>
+        <div class="mb-3" style="text-align: left;">
+            <label class="form-label" style="display: block; width: 100px;">Address:</label>
+            {{ form.address }}
+        </div>
+        <div class="mb-3" style="text-align: left;">
+            <label class="form-label" style="display: block; width: 100px;">Password:</label>
+            {{ form.password1 }}
+        </div>
+        <div class="mb-3" style="text-align: left;">
+            <label class="form-label" style="display: block; width: 100px;">PasswordConfirmation:</label>
+            {{ form.password2 }}
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <div style="margin-top: 10px;"></div>
+    <div class="mb-3">
+        <p>Already registered? <a href="{% url 'login' %}">Log in here</a></p>
+    </div>
+</div>
 
 {% endblock %}
