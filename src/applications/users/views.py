@@ -1,7 +1,7 @@
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, ProfileForm
@@ -13,8 +13,9 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
-            if User.objects.filter(username=username).exists():
-                messages.warning(request, 'This username is already registered. Please log in.')
+            email = form.cleaned_data['email']
+            if User.objects.filter(email=email).exists():
+                messages.warning(request, 'This email is already registered. Please log in.')
                 return redirect('login')
             user = form.save()
             raw_password = form.cleaned_data.get('password1')
