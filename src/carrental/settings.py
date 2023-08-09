@@ -31,7 +31,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_URL = 'register'
+
+LOGIN_REDIRECT_URL = 'profile'
+
+AUTH_USER_MODEL = 'users.User'
 
 # Application definition
 
