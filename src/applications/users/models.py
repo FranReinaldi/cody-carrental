@@ -11,6 +11,7 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user.set_password(password)
         user.save(using=self._db)
+        user_type = UserType.objects.create(user=user,type='C')
         return user
 
     def create_superuser(self, email, username, password=None):
@@ -21,6 +22,7 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser=True
         user.save(using=self._db)
+        user_type = UserType.objects.create(user=user,type='S')
         return user
 
 
@@ -46,5 +48,5 @@ class UserType(models.Model):
         ('S','STAFF'),
         ('C','CLIENT')
         )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     type = models.CharField(choices=TYPE_CHOICES, default='C', max_length=2)
