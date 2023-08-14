@@ -12,8 +12,9 @@
         </div>
         <div class="mb-3" style="text-align: left;">
             <label class="form-label" style="display: block; width: 100px;">Email:</label>
-            {{ form.email }}
-        </div>
+            <input type="email" id="email" name="email" class="form-control">
+            <span id="email-error" style="color: red;"></span>
+        </div>        
         <div class="mb-3" style="text-align: left;">
             <label class="form-label" style="display: block; width: 100px;">Phone:</label>
             {{ form.phone }}
@@ -37,5 +38,28 @@
         <p>Already registered? <a href="{% url 'login' %}">Log in here</a></p>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#email').on('input', function() {
+        const email = $(this).val();
+        $.ajax({
+            url: '/users/check_email/',
+            data: {
+                'email': email
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data.email_taken) {
+                    $('#email-error').text('This email already in use.');
+                } else {
+                    $('#email-error').text('');
+                }
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}

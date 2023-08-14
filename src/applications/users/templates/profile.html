@@ -19,6 +19,7 @@
                 {{ form.address }}
             </div>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveModal">Update Profile</button>
+        <button type="button" class="btn btn-info" onclick="window.location.href='{% url 'change_password' %}'">Change Password</button>
         
         <!-- Save Modal -->
         <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
