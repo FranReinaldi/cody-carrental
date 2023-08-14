@@ -1,11 +1,13 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import (authenticate, login, logout,
+                                 update_session_auth_hash)
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, ProfileForm
-from .models import User
+from .models import CustomUser
 
 
 def register(request):
@@ -14,7 +16,7 @@ def register(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
-            if User.objects.filter(email=email).exists():
+            if CustomUser.objects.filter(email=email).exists():
                 return redirect('login')
             user = form.save()
             raw_password = form.cleaned_data.get('password1')
@@ -47,6 +49,32 @@ def delete_account(request):
         logout(request)
         return redirect('register')
     return render(request, 'profile.html')
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = PasswordChangeForm(request.user)
+
+    return render(request, 'change_password.html', {'form': form})
+
+
+def check_email(request):
+    email = request.GET.get('email', None)
+    if email:
+        email_taken = CustomUser.objects.filter(email=email).exists()
+        print(email_taken)
+        return JsonResponse({'email_taken': email_taken})
+    return JsonResponse({'error': 'Email no proporcionado'}, status=400)
 
 
 class CustomLoginView(LoginView):
