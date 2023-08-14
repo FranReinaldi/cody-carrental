@@ -35,7 +35,7 @@ LOGIN_URL = 'register'
 
 LOGIN_REDIRECT_URL = 'profile'
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Application definition
 
