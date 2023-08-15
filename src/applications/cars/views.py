@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Car, Manufacturer
-from .forms import ManufacturerForm, CarForm
+from .models import Car, Manufacturer, Rental
+from .forms import ManufacturerForm, CarForm,RentalForm
+from datetime import date
 
 def console(request):
     cars = Car.objects.all()
@@ -77,3 +78,48 @@ def brand_delete(request, pk):
     if request.method == 'POST':
         brand.delete()
         return redirect('car-console')
+    
+
+def rental_console(request):
+    loged_user = request.user
+    if loged_user.is_superuser:
+        rentals = Rental.objects.all()
+    else:
+        rentals = Rental.objects.filter(user=loged_user)
+    context={
+        'rentals':rentals
+    }
+
+    return render(
+        request,
+        'cars/rentals.html',
+        context
+    )
+
+def new_rental(request):
+    if request.method == 'POST':
+        form = RentalForm(request.POST)
+        if form.is_valid():
+            rental = form.save(commit=False) 
+            rental.customer = request.user  
+            rental.save()  
+            return redirect('rental-console')
+    else:
+        form = RentalForm()
+    
+    return render(request, 'cars/new_rental.html', {'form': form})
+
+def rental_detail(request, rental_id):
+    rental = get_object_or_404(Rental, id=rental_id)
+    date_today = date.today()
+    if request.method == 'POST':
+        rating = int(request.POST.get('rating'))
+        rental.calification = rating
+        if rental.end_date > date_today:
+            rental.end_date = date_today   
+        rental.save()
+        return redirect('rental-console')
+
+
+    return render(request, 'cars/rental_detail.html', {'rental': rental})
+
