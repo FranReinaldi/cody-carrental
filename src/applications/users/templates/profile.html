@@ -2,22 +2,22 @@
 
 {% block content %}
 
-<div class="container mt-5" style="text-align: center;">
+<div class="container mt-5" style="text-align: center; ">
     <h1>User Profile</h1>
-    <form method="post" class="mt-4">
+    <form method="post" class="mt-4" style="display: inline-block;">
         {% csrf_token %}
-            <div class="mb-3" style="text-align: left;">
-                <label class="form-label" style="display: block; width: 100px;">Username:</label>
-                {{ form.username }}
-            </div>
-            <div class="mb-3" style="text-align: left;">
-                <label class="form-label" style="display: block; width: 100px;">Phone:</label>
-                {{ form.phone }}
-            </div>
-            <div class="mb-3" style="text-align: left;">
-                <label class="form-label" style="display: block; width: 100px;">Address:</label>
-                {{ form.address }}
-            </div>
+        <div class="form-floating mb-3">
+            {{ form.username }}
+            <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.phone }}
+            <label class="form-label" for="{{ form.phone.id_for_label }}">Phone</label>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.address }}
+            <label class="form-label" for="{{ form.Address.id_for_label }}">Address</label><br>
+        </div>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveModal">Update Profile</button>
         <button type="button" class="btn btn-info" onclick="window.location.href='{% url 'change_password' %}'">Change Password</button>
         
