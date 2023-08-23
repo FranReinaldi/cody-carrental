@@ -4,32 +4,31 @@
 
 <div class="container mt-5" style="text-align: center;">
     <h1>User Registration</h1>
-    <form method="post" class="mt-4">
+    <form method="post" class="mt-4" style="display: inline-block;">
         {% csrf_token %}
-        <div class="mb-3" style="text-align: left;">
-            <label class="form-label" style="display: block; width: 100px;">Username:</label>
+        <div class="form-floating mb-3">
             {{ form.username }}
+            <label class="form-label" for="{{ form.username.id_for_label }}">Username:</label>
         </div>
-        <div class="mb-3" style="text-align: left;">
-            <label class="form-label" style="display: block; width: 100px;">Email:</label>
-            <input type="email" id="email" name="email" class="form-control">
-            <span id="email-error" style="color: red;"></span>
+        <div class="form-floating mb-3">
+            {{ form.email }}
+            <label class="form-label" for="{{ form.email.id_for_label }}">Email:</label>
         </div>        
-        <div class="mb-3" style="text-align: left;">
-            <label class="form-label" style="display: block; width: 100px;">Phone:</label>
+        <div class="form-floating mb-3">
             {{ form.phone }}
+            <label class="form-label" style="display: block; width: 100px;">Phone:</label>
         </div>
-        <div class="mb-3" style="text-align: left;">
-            <label class="form-label" style="display: block; width: 100px;">Address:</label>
+        <div class="form-floating mb-3">
             {{ form.address }}
+            <label class="form-label" style="display: block; width: 100px;">Address:</label>
         </div>
-        <div class="mb-3" style="text-align: left;">
-            <label class="form-label" style="display: block; width: 100px;">Password:</label>
+        <div class="form-floating mb-3">
             {{ form.password1 }}
+            <label class="form-label" style="display: block; width: 100px;">Password:</label>
         </div>
-        <div class="mb-3" style="text-align: left;">
-            <label class="form-label" style="display: block; width: 100px;">PasswordConfirmation:</label>
+        <div class="form-floating mb-3">
             {{ form.password2 }}
+            <label class="form-label" style="display: block; width: 200px;">PasswordConfirmation:</label>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
     </form>
@@ -38,28 +37,5 @@
         <p>Already registered? <a href="{% url 'login' %}">Log in here</a></p>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#email').on('input', function() {
-        const email = $(this).val();
-        $.ajax({
-            url: '/users/check_email/',
-            data: {
-                'email': email
-            },
-            dataType: 'json',
-            success: function(data) {
-                if (data.email_taken) {
-                    $('#email-error').text('This email already in use.');
-                } else {
-                    $('#email-error').text('');
-                }
-            }
-        });
-    });
-});
-</script>
 
 {% endblock %}
