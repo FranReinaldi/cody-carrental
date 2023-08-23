@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+    <style>
+        @page {
+            size: a4 portrait;
+
+            @frame header_frame {
+                -pdf-frame-content: header_content;
+                left: 50pt;
+                width: 512pt;
+                top: 50pt;
+                height: 80pt;
+            }
+            @frame content_frame {
+                /* Content Frame */
+            left: 50pt;
+            width: 512pt;
+            top: 90pt;
+            height: 695pt;
+            }
+
+            @frame footer_frame {
+                /* Another static Frame */
+            -pdf-frame-content:footer_content;
+            left: 50pt;
+            width: 512pt;
+            top: 790pt;
+            height: 20pt;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header_content">
+        {% block header_content %}
+        {% endblock %}
+    </div>
+
+    <div id="content_frame">
+        {% block body %}
+        {% endblock %}
+    </div>
+
+    <div id="footer_content">
+        <div style="border-top: 1px #007DB6 solid; padding-top: 5px;">
+            - Page <pdf:pagenumber> of <pdf:pagecount> - {{ text_footer }}
+        </div>
+    </div>
+
+</body>
+</html>
