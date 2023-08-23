@@ -1,7 +1,15 @@
+from datetime import date
+from xhtml2pdf import pisa
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.shortcuts import render, redirect, get_object_or_404
+
+from applications.core.functions import link_callback
+
 from .models import Car, Manufacturer, Rental
 from .forms import ManufacturerForm, CarForm,RentalForm
-from datetime import date
+
 
 def console(request):
     cars = Car.objects.all()
@@ -15,6 +23,7 @@ def console(request):
         context
     )
 
+
 def new_manufacturer(request):
     if request.method == 'POST':
         form = ManufacturerForm(request.POST)
@@ -25,6 +34,7 @@ def new_manufacturer(request):
         form = ManufacturerForm()
     
     return render(request, 'cars/new_brand.html', {'form': form})
+
 
 def new_car(request):
     if request.method == 'POST':
@@ -37,12 +47,14 @@ def new_car(request):
     
     return render(request, 'cars/new_car.html', {'form': form})
 
+
 def car_delete(request, pk):
     car = get_object_or_404(Car, pk=pk)
 
     if request.method == 'POST':
         car.delete()
         return redirect('car-console')
+
 
 def car_detail(request, car_id):
     car = get_object_or_404(Car, id=car_id)
@@ -58,6 +70,7 @@ def car_detail(request, car_id):
 
     return render(request, 'cars/car_detail.html', {'car': car, 'form': form})
 
+
 def brand_detail(request, brand_id):
     brand = get_object_or_404(Manufacturer, id=brand_id)
 
@@ -71,6 +84,7 @@ def brand_detail(request, brand_id):
         form = ManufacturerForm(instance=brand)
 
     return render(request, 'cars/brand_detail.html', {'brand': brand, 'form': form})
+
 
 def brand_delete(request, pk):
     brand = get_object_or_404(Manufacturer, pk=pk)
@@ -96,6 +110,7 @@ def rental_console(request):
         context
     )
 
+
 def new_rental(request):
     if request.method == 'POST':
         form = RentalForm(request.POST)
@@ -108,6 +123,7 @@ def new_rental(request):
         form = RentalForm()
     
     return render(request, 'cars/new_rental.html', {'form': form})
+
 
 def rental_detail(request, rental_id):
     rental = get_object_or_404(Rental, id=rental_id)
@@ -123,3 +139,23 @@ def rental_detail(request, rental_id):
 
     return render(request, 'cars/rental_detail.html', {'rental': rental})
 
+
+def cars_export_pdf(request):
+    
+    cars = Car.objects.all()
+    
+    context = {
+        'title': 'CARS',
+        'text_footer': 'Car list',
+        'car_list': cars,
+    }
+    template_path = 'cars/pdf/cars_report.html'
+    filename = f'pdf.pdf'
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+    html = render_to_string(template_path, context)
+    pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+
+    return response
