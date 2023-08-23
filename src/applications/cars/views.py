@@ -146,12 +146,11 @@ def cars_export_pdf(request):
     
     context = {
         'title': 'CARS',
-        'text_footer': 'Listado de autos',
+        'text_footer': 'Car list',
         'car_list': cars,
     }
     template_path = 'cars/pdf/cars_report.html'
     filename = f'pdf.pdf'
-    # destination = open(filename, "w+b")
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
