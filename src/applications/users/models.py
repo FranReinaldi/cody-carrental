@@ -1,23 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
+from .functions import create_user
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, password=None):
-        if not email:
-            raise ValueError('The Email field must be set')
-
-        user = self.model(username=username, email=email)
-        email = self.normalize_email(email)
-        user.set_password(password)
-        user.save(using=self._db)
+        user = create_user(self, email, username, password)
         user_type = UserType.objects.create(user=user,type='C')
         return user
 
     def create_superuser(self, email, username, password=None):
-        user = self.create_user(email,
-                                username,
-                                password=password)
+        user = create_user(self, email, username, password)
         user.is_admin = True
         user.is_staff = True
         user.is_superuser=True
@@ -40,6 +34,10 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    @property    
+    def user_type(self):
+        return UserType.objects.filter(user=self).first().type
 
 
 class UserType(models.Model):
