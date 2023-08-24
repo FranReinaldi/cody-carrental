@@ -1,0 +1,13 @@
+{% extends 'email/base.html' %}
+
+{% block table-h1 %}
+    Hi customer <strong>{{ customer.get_full_name }}</strong> this is your rental list
+{% endblock %}
+
+{% block table-body %}
+    {% for rental in rental_list %}
+        <p>
+            {{ rental.car }} | {{ rental.start_date }} - {{ rental.end_date }} | $ {{ rental.get_price }}
+        </p>
+    {% endfor %}
+{% endblock %}

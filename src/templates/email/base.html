@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap');
+
+        * {
+            font-family: 'Karla', sans-serif !important;
+        }
+
+        table {
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+<table class="main-table">
+    <tr class="table-head">
+        <td colspan="3">
+            <table>
+                <tr style="color: #FFF">
+                    <td>
+                        <span style="margin-left: 30px">CAR-RENTAL</span>
+                    </td>
+                    <td></td>
+                    <td style="text-align: end;">
+                        <span style="margin-right: 30px">{{ customer }}</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr class="h1-tr">
+        <td class="empty-td"></td>
+        <td class="body-td">
+            {% block table-h1 %}
+            {% endblock %}
+        </td>
+        <td class="empty-td"></td>
+    </tr>
+    <tr class="body-tr">
+        <td class="empty-td"></td>
+        <td class="body-td" style="padding-bottom: 50px">
+            {% block table-body %}
+            {% endblock %}
+        </td>
+        <td class="empty-td"></td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from applications.core.functions import link_callback
 
+from .functions import send_rental_all_customers
 from .models import Car, Manufacturer, Rental
 from .forms import ManufacturerForm, CarForm,RentalForm
 
@@ -159,3 +160,7 @@ def cars_export_pdf(request):
     pisa.CreatePDF(html, dest=response, link_callback=link_callback)
 
     return response
+
+
+def rental_send_customer_emails(request):
+    customers = send_rental_all_customers()

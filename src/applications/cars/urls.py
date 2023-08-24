@@ -3,7 +3,8 @@ from django.urls import path, include
 from .views import (console, new_manufacturer, new_car, 
                     car_delete, car_detail, brand_detail,
                     brand_delete, rental_console,new_rental,
-                    rental_detail, cars_export_pdf)
+                    rental_detail, cars_export_pdf,
+                    rental_send_customer_emails)
 
 urlpatterns = [
     path('console/',console, name='car-console'),
@@ -19,6 +20,9 @@ urlpatterns = [
 
     # EXPORT PDF
     path('console/export_pdf', cars_export_pdf, name='cars_export_pdf'),
+
+    # SEND EMAILS
+    path('rental/send_customer_emails', rental_send_customer_emails, name='email_customers'),
     
 
 ]
