@@ -9,7 +9,7 @@ from applications.core.functions import link_callback
 from django.contrib.auth.decorators import login_required
 
 from .models import Car, Manufacturer, Rental
-from .forms import ManufacturerForm, CarForm,RentalForm
+from .forms import ManufacturerForm, CarForm, RentalForm
 from .decorators import superuser_only
 
 @login_required
@@ -98,12 +98,14 @@ def brand_delete(request, pk):
 @login_required
 def rental_console(request):
     loged_user = request.user
+    date_today = date.today()
     if loged_user.is_superuser:
         rentals = Rental.objects.all()
     else:
         rentals = Rental.objects.filter(customer=loged_user)
     context={
-        'rentals':rentals
+        'rentals':rentals,
+        'date': date_today
     }
 
     return render(
@@ -161,3 +163,11 @@ def cars_export_pdf(request):
     pisa.CreatePDF(html, dest=response, link_callback=link_callback)
 
     return response
+
+@login_required
+def rental_calification(request, rental_id):
+    rental = get_object_or_404(Rental, pk=rental_id)
+    calification = int(request.POST.get('rating', 0))
+    rental.calification = calification
+    rental.save()
+    return redirect('rental-console')
