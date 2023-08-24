@@ -37,6 +37,7 @@
                 <th>End Date</th>
                 <th>Calification</th>
                 <th>Price</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -49,9 +50,48 @@
                 <td>{{ rental.end_date }}</td>
                 <td>{{ rental.calification }}</td>
                 <td>{{ rental.get_price }}</td>
+              </a>
+              {%if not rental.calification%}
+                {% if rental.end_date <= date %}
+                  <td>
+                <a href="#" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#calificationModal{{ rental.id }}">calificate</a>
+                  </td>
+              {%else%}
+                <td><a class="btn btn-danger btn-sm" href="/cars/rental/{{rental.pk}}">Rental profile</a></td>
+              {%endif%}
+               {%else%}
+                <td><a class="btn btn-danger btn-sm" href="/cars/rental/{{rental.pk}}">Rental profile</a></td>
+              {%endif%}
             </tr>
-          </a>
+            
             {% endfor %}
         </tbody>
+        
     </table>
+    {% for rental in rentals %}
+    <div class="modal fade" id="calificationModal{{ rental.id }}" tabindex="-1" aria-labelledby="calificationModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="calificationModalLabel">Rental Calification</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="post" action="{% url 'rental_calification' rental.id %}">
+                  {% csrf_token %}
+                  <div class="rating" style="text-align: center">
+                      <input type="radio" name="rating" value="1" id="star1"><label for="star1"> Horrible</label><br>
+                      <input type="radio" name="rating" value="2" id="star2"><label for="star2"> Bad</label><br>
+                      <input type="radio" name="rating" value="3" id="star3"><label for="star3"> Good</label><br>
+                      <input type="radio" name="rating" value="4" id="star4"><label for="star4"> Very good</label><br>
+                      <input type="radio" name="rating" value="5" id="star5"><label for="star5"> Excellent</label><br>
+                  
+                  <button class="btn btn-primary" type="submit">Submit Rating</button>
+                </div>
+              </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+  {%endfor%}
 {% endblock %}
