@@ -99,7 +99,7 @@ def rental_console(request):
     if loged_user.is_superuser:
         rentals = Rental.objects.all()
     else:
-        rentals = Rental.objects.filter(user=loged_user)
+        rentals = Rental.objects.filter(customer=loged_user)
     context={
         'rentals':rentals
     }
