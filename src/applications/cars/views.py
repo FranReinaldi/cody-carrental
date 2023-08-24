@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from applications.core.functions import link_callback
 from django.contrib.auth.decorators import login_required
 
+from .functions import send_rental_all_customers
 from .models import Car, Manufacturer, Rental
 from .forms import ManufacturerForm, CarForm, RentalForm
 from .decorators import superuser_only
@@ -163,7 +164,8 @@ def cars_export_pdf(request):
     pisa.CreatePDF(html, dest=response, link_callback=link_callback)
 
     return response
-
+    
+    
 @login_required
 def rental_calification(request, rental_id):
     rental = get_object_or_404(Rental, pk=rental_id)
@@ -171,3 +173,7 @@ def rental_calification(request, rental_id):
     rental.calification = calification
     rental.save()
     return redirect('rental-console')
+  
+
+def rental_send_customer_emails(request):
+    customers = send_rental_all_customers()

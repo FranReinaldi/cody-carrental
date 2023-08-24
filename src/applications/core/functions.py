@@ -1,4 +1,7 @@
+from smtplib import SMTPException
+from django.core.mail import send_mail
 
+# Es usado por xhtml2pdf para levantar assets de media & static
 def link_callback(uri, rel):
     import os
     from django.conf import settings
@@ -28,3 +31,18 @@ def link_callback(uri, rel):
         else:
             print('URI', uri)
             return uri
+
+
+def send_email(subject, txt, html, recipient):
+
+    try:
+        send_mail(
+            subject=subject,
+            message=txt,
+            from_email='notify@carrental.com',
+            recipient_list=[recipient, ],
+            html_message=html,
+            fail_silently=False,
+        )
+    except SMTPException as error:
+        print(error)

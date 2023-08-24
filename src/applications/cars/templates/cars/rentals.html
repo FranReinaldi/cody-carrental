@@ -24,6 +24,12 @@
             </li>
           {% endif %}
 
+          {% if user.user_type == 'S' %}
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'email_customers' %}">Send rental emails</a>
+            </li>
+          {% endif %}
+
         </ul>
       </div>
     </div>
