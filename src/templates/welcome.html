@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>CARRENTAL</h1>
+    <p>
+        Welcome to car rental...
+    </p>
+
+    {% if not user.is_authenticated %}
+
+        <p>
+            <div>
+                <a href="{% url 'login' %}">Log in</a> | <a href="{% url 'register' %}">Sign up</a>
+            </div>
+        </p>
+
+    {% else %}
+
+        <p>
+            <a href="{% url 'profile' %}">{{ user }}</a> | <a href="{% url 'logout' %}">Log out</a>
+        </p>
+
+        {% if user.user_type == 'S' %}
+            <p>
+                <a href="{% url 'car-console' %}">Car console</a> | <a href="{% url 'rental-console' %}">Rental console</a>
+            </p>
+        {% endif %}
+
+        {% if user.user_type == 'C' %}
+            <p>
+                <a href="{% url 'rental-console' %}">Rental</a>
+            </p>
+        {% endif %}
+
+    {% endif %}
+{% endblock %}
