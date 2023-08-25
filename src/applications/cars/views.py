@@ -177,3 +177,13 @@ def rental_calification(request, rental_id):
 
 def rental_send_customer_emails(request):
     customers = send_rental_all_customers()
+
+    context = {
+        'customers': customers
+    }
+
+    return render(
+        request,
+        'cars/rental_email_sent.html',
+        context
+    )

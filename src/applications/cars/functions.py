@@ -14,7 +14,7 @@ def send_rental_email(customer):
     rental_list = Rental.objects.filter(customer=customer)
     template = 'cars/email/rental_customer.html'
     context = {
-        'customer': customer.get_full_name(),
+        'customer': customer,
         'rental_list': rental_list,
     }
 
@@ -25,6 +25,8 @@ def send_rental_email(customer):
 
     txt_rendered = strip_tags(html_rendered)
 
+    # Para verificar el proceso en paralelo
+    # Interesante seria hacerlo con logging
     print('SEND MAIL: ', customer.email)
 
     send_email(
