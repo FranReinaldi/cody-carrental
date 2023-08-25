@@ -6,12 +6,14 @@ from django.template.loader import render_to_string
 from django.shortcuts import render, redirect, get_object_or_404
 
 from applications.core.functions import link_callback
+from django.contrib.auth.decorators import login_required
 
 from .functions import send_rental_all_customers
 from .models import Car, Manufacturer, Rental
-from .forms import ManufacturerForm, CarForm,RentalForm
+from .forms import ManufacturerForm, CarForm, RentalForm
+from .decorators import superuser_only
 
-
+@login_required
 def console(request):
     cars = Car.objects.all()
     context={
@@ -24,7 +26,7 @@ def console(request):
         context
     )
 
-
+@superuser_only
 def new_manufacturer(request):
     if request.method == 'POST':
         form = ManufacturerForm(request.POST)
@@ -36,7 +38,7 @@ def new_manufacturer(request):
     
     return render(request, 'cars/new_brand.html', {'form': form})
 
-
+@superuser_only
 def new_car(request):
     if request.method == 'POST':
         form = CarForm(request.POST)
@@ -48,7 +50,7 @@ def new_car(request):
     
     return render(request, 'cars/new_car.html', {'form': form})
 
-
+@superuser_only
 def car_delete(request, pk):
     car = get_object_or_404(Car, pk=pk)
 
@@ -56,7 +58,7 @@ def car_delete(request, pk):
         car.delete()
         return redirect('car-console')
 
-
+@login_required
 def car_detail(request, car_id):
     car = get_object_or_404(Car, id=car_id)
 
@@ -71,7 +73,7 @@ def car_detail(request, car_id):
 
     return render(request, 'cars/car_detail.html', {'car': car, 'form': form})
 
-
+@login_required
 def brand_detail(request, brand_id):
     brand = get_object_or_404(Manufacturer, id=brand_id)
 
@@ -86,7 +88,7 @@ def brand_detail(request, brand_id):
 
     return render(request, 'cars/brand_detail.html', {'brand': brand, 'form': form})
 
-
+@superuser_only
 def brand_delete(request, pk):
     brand = get_object_or_404(Manufacturer, pk=pk)
 
@@ -94,15 +96,17 @@ def brand_delete(request, pk):
         brand.delete()
         return redirect('car-console')
     
-
+@login_required
 def rental_console(request):
     loged_user = request.user
+    date_today = date.today()
     if loged_user.is_superuser:
         rentals = Rental.objects.all()
     else:
         rentals = Rental.objects.filter(customer=loged_user)
     context={
-        'rentals':rentals
+        'rentals':rentals,
+        'date': date_today
     }
 
     return render(
@@ -111,7 +115,7 @@ def rental_console(request):
         context
     )
 
-
+@login_required
 def new_rental(request):
     if request.method == 'POST':
         form = RentalForm(request.POST)
@@ -125,7 +129,7 @@ def new_rental(request):
     
     return render(request, 'cars/new_rental.html', {'form': form})
 
-
+@login_required
 def rental_detail(request, rental_id):
     rental = get_object_or_404(Rental, id=rental_id)
     date_today = date.today()
@@ -140,7 +144,7 @@ def rental_detail(request, rental_id):
 
     return render(request, 'cars/rental_detail.html', {'rental': rental})
 
-
+@superuser_only
 def cars_export_pdf(request):
     
     cars = Car.objects.all()
@@ -160,7 +164,16 @@ def cars_export_pdf(request):
     pisa.CreatePDF(html, dest=response, link_callback=link_callback)
 
     return response
-
+    
+    
+@login_required
+def rental_calification(request, rental_id):
+    rental = get_object_or_404(Rental, pk=rental_id)
+    calification = int(request.POST.get('rating', 0))
+    rental.calification = calification
+    rental.save()
+    return redirect('rental-console')
+  
 
 def rental_send_customer_emails(request):
     customers = send_rental_all_customers()
