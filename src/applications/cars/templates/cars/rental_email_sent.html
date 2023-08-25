@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{%block content%}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+
+        <h2>Emails sent to</h2>
+
+        <ul>
+        {% for customer in customers %}
+            <li>{{ customer }}</li>
+        {% endfor %}
+        </ul>
+
+        <div class="mb-5">
+            <a href="{% url 'rental-console' %}">Back to Rental console</a>
+        </div>
+
+    </div>
+</div>
+
+{%endblock%}
