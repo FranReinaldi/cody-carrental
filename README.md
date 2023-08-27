@@ -34,6 +34,11 @@ pip install -r requirements.txt
 ### Instructions to start Django server locally:
 #
 
+#### Move to src folder
+
+```sh
+cd src
+```
 #### Create the data base
 
 ```sh
